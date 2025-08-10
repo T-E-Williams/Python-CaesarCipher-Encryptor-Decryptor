@@ -1,14 +1,16 @@
-
-def caesar_decrypt (ciphertext, shift):
-
+def caesar_decrypt(ciphertext, shift):
     decrypted = ""
-    
+    shift = shift % 26  # normalize shift to 0–25
+
     for char in ciphertext:
-        
-        decrypted += chr(96+((ord(char)-shift)%26))
+        if char.isalpha():
+            base = ord('a') if char.islower() else ord('A')
+            # subtract shift for decryption
+            decrypted += chr((ord(char) - base - shift) % 26 + base)
+        else:
+            decrypted += char  # keep non-letters as-is
+    return decrypted
 
-    print(decrypted)
-    
 encrypted_string = "dbo"
-
-caesar_decrypt(encrypted_string, -1)
+print(caesar_decrypt(encrypted_string, 1))   # -> "can"
+print(caesar_decrypt(encrypted_string, 52))  # -> "dbo"
